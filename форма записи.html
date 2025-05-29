@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Запись на консультацию</title>
+    <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.cdnfonts.com/css/along-serif-bsc" rel="stylesheet">
+    <link href="https://fonts.cdnfonts.com/css/aftika" rel="stylesheet">
+    <style>
+        /* Общие стили */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Involve', Arial, sans-serif;
+            background-color: #343642;
+            color: #F3F1EB;
+            padding-top: 90px;
+        }
+
+        /* Шапка */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 80px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background-color: #343642;
+        }
+        
+        .logo {
+            width: 150px;
+            height: auto;
+            object-fit: contain;
+            flex-shrink: 0;
+        }
+        
+        nav {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        
+        nav a {
+            text-decoration: none;
+            color: #343642;
+            font-size: 16px;
+            padding: 10px 24px;
+            border-radius: 15px;
+            background-color: #C5AE85;
+            white-space: nowrap;
+            font-weight: 400;
+            min-width: 180px;
+            text-align: center;
+        }
+        
+        nav a.phone {
+            background-color: transparent;
+            color: #C5AE85;
+            padding: 0;
+            min-width: auto;
+        }
+        
+        .burger-menu {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+            z-index: 101;
+        }
+        
+        .burger-line {
+            width: 25px;
+            height: 3px;
+            background-color: #C5AE85;
+            border-radius: 3px;
+            transition: all 0.3s ease;
+        }
+        
+        /* Адаптация шапки */
+        @media (max-width: 992px) {
+            header {
+                padding: 15px 30px;
+            }
+            
+            nav {
+                display: none;
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100vh;
+                background-color: #343642;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                z-index: 100;
+            }
+            
+            nav.active {
+                display: flex;
+            }
+            
+            .burger-menu {
+                display: flex;
+                z-index: 101;
+            }
+            
+            .burger-menu.active .burger-line:nth-child(1) {
+                transform: rotate(45deg) translate(5px, 5px);
+            }
+            
+            .burger-menu.active .burger-line:nth-child(2) {
+                opacity: 0;
+            }
+            
+            .burger-menu.active .burger-line:nth-child(3) {
+                transform: rotate(-45deg) translate(5px, -5px);
+            }
+            
+            nav a {
+                width: 80%;
+                text-align: center;
+                margin: 10px 0;
+                min-width: 200px;
+                padding: 12px 24px;
+            }
+            
+            nav a.phone {
+                background-color: transparent !important;
+                color: #C5AE85 !important;
+                padding: 0 !important;
+                min-width: auto;
+                width: auto;
+                margin-left: 0;
+                order: -1;
+                margin-bottom: 20px;
+                font-size: 18px;
+            }
+            
+            .logo {
+                width: 120px;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .logo {
+                width: 100px;
+            }
+        }
+
+        /* Основной контент */
+        .main-container {
+            width: 100%;
+            max-width: 1200px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 30px;
+            margin: 0 auto;
+            padding: 40px 20px 80px;
+        }
+
+        .image-container {
+            width: 100%;
+            height: 300px;
+            background-color: #f5f5f5;
+            border-radius: 30px;
+            overflow: hidden;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .image-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .title-box {
+            position: absolute;
+            bottom: 10px;
+            background-color: #191D32;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 30px;
+            text-align: center;
+            font-weight: 700;
+            font-size: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transform: translateX(-50%);
+            left: 50%;
+            white-space: nowrap;
+            max-width: 90%;
+        }
+
+        .description-text {
+            text-align: center;
+            color: #F3F1EB;
+            line-height: 1.4;
+            font-size: 16px;
+            max-width: 100%;
+        }
+
+        .form-container {
+            background-color: #C5AE85;
+            border-radius: 30px;
+            padding: 30px;
+            width: 100%;
+            max-width: 800px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .form-group input {
+            width: 100%;
+            max-width: 580px;
+            height: 50px;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 20px;
+            background-color: #EBE8D7;
+            font-size: 16px;
+            color: #8A93A9;
+            outline: none;
+        }
+
+        .form-group input::placeholder {
+            color: #8A93A9;
+            opacity: 1;
+        }
+
+        .submit-btn {
+            background-color: #343642;
+            color: #EBE8D7;
+            border: none;
+            padding: 15px;
+            height: 50px;
+            width: 100%;
+            max-width: 580px;
+            border-radius: 20px;
+            font-size: 18px;
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: background 0.3s;
+        }
+
+        .submit-btn:hover {
+            background-color: #EBE8D7;
+            color: #343642;
+        }
+
+        /* Футер */
+        .footer-logo {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start; /* Выравнивание по левому краю */
+            padding-top: 40px;
+            border-top: 1px solid #C5AE85;
+            margin-top: 20px;
+            width: 100%;
+            max-width: 1200px;
+            padding-left: 20px; /* Отступ слева */
+        }
+
+        .footer-logo img {
+            width: 100px;
+            height: auto;
+        }
+
+        /* Адаптация для планшетов */
+        @media (min-width: 600px) {
+            body {
+                padding-top: 100px;
+            }
+            .image-container {
+                height: 350px;
+            }
+        }
+
+        /* Адаптация для десктопов */
+        @media (min-width: 900px) {
+            body {
+                padding-top: 120px;
+            }
+            .title-box {
+                font-size: 24px;
+            }
+            .footer-logo img {
+                width: 120px;
+            }
+            .footer-logo {
+                padding-left: 40px; /* Больший отступ на десктопах */
+            }
+        }
+
+        /* Адаптация для мобильных */
+        @media (max-width: 480px) {
+            body {
+                padding-top: 80px;
+            }
+            .image-container {
+                height: 200px;
+            }
+            .title-box {
+                font-size: 16px;
+                padding: 8px 15px;
+            }
+            .form-container {
+                padding: 20px;
+            }
+            .description-text br {
+                display: none;
+            }
+            .description-text {
+                font-size: 14px;
+            }
+            .footer-logo img {
+                width: 80px;
+            }
+            .footer-logo {
+                padding-left: 15px; /* Меньший отступ на мобильных */
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Шапка -->
+    <header>
+        <img src="logo.svg" alt="Логотип JK Design" class="logo">
+        <nav id="nav">
+            <a href="JK.html">Главная</a>
+            <a href="JK.html#services">Услуги</a>
+            <a href="price.html">Тарифы</a>
+            <a href="portfolio.html">Блог</a>
+            <a href="#" class="phone">+7 914 784 62 68</a>
+            <a href="JK.html#reviews">Отзывы</a>
+        </nav>
+        <div class="burger-menu" id="burger">
+            <div class="burger-line"></div>
+            <div class="burger-line"></div>
+            <div class="burger-line"></div>
+        </div>
+    </header>
+    
+    <div class="main-container">
+        <div class="image-container">
+            <img src="Rectangle 77.png" alt="Консультация дизайнера">
+            <div class="title-box">Запись на консультацию или заказ услуги</div>
+        </div>
+        
+        <div class="description-text">
+            Оставьте телефон<br>
+            Мы предоставим расчет полной стоимости проекта и бесплатную<br>
+            консультацию дизайнера у вас на объекте
+        </div>
+        
+        <div class="form-container">
+            <form>
+                <div class="form-group">
+                    <input type="text" id="name" name="name" required placeholder="*Ваше имя">
+                </div>
+                <div class="form-group">
+                    <input type="tel" id="phone" name="phone" required placeholder="*Телефон для связи">
+                </div>
+                <div class="form-group">
+                    <input type="text" id="area" name="area" placeholder="*Площадь">
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="submit-btn">Получить расчёт</button>
+                </div>
+            </form>
+        </div>
+        
+        <!-- Футер с логотипом (выровнен по левому краю) -->
+        <div class="footer-logo">
+            <img src="logo.svg" alt="Логотип JK Design">
+        </div>
+    </div>
+
+    <script>
+        // Бургер-меню
+        const burger = document.getElementById('burger');
+        const nav = document.getElementById('nav');
+
+        burger.addEventListener('click', function() {
+            nav.classList.toggle('active');
+            burger.classList.toggle('active');
+        });
+
+        // Закрытие меню при клике на ссылку
+        document.querySelectorAll('nav a').forEach(link => {
+            link.addEventListener('click', () => {
+                nav.classList.remove('active');
+                burger.classList.remove('active');
+            });
+        });
+    </script>
+</body>
+</html>
